@@ -1,0 +1,50 @@
+﻿@model IEnumerable<EmployeeApp.Models.Dto.ProjectDto>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                <p>ProjectId</p>
+            </th>
+            <th>
+                <p>FirstEmployeeId</p>
+            </th>
+            <th>
+                <p>SecondEmployeeId</p>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ProjectId)
+                </td>
+                @if (item.Employees.Count() == 2)
+                {
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Employees.FirstOrDefault().EmpId)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Employees.LastOrDefault().EmpId)
+                    </td>
+                }
+            </tr>
+        }
+    </tbody>
+</table>
+
+<form method="post" enctype="multipart/form-data" asp-controller="Employees" asp-action="UploadFile">
+    <div class="form-group">
+        <div class="col-md-10">
+            <p>Upload one or more files using this form:</p>
+            <input type="file" name="files" multiple />
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-10">
+            <input type="submit" value="Upload" />
+        </div>
+    </div>
+</form>
