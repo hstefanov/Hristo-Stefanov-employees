@@ -18,8 +18,11 @@ namespace EmployeeApp.Console.App
 
             foreach (var project in projects)
             {
-                System.Console.Write($"Project with id : {project.ProjectId} \n Employees id with longest time in same project : {project.Employees.FirstOrDefault()?.EmpId} \t {project.Employees.LastOrDefault()?.EmpId} ");
-                System.Console.WriteLine();
+                if(project.Employees.Count() == 2)
+                {
+                    System.Console.Write($"Project with id : {project.ProjectId} \n Employees id with longest time in same project : {project.Employees.FirstOrDefault()?.EmpId} \t {project.Employees.LastOrDefault()?.EmpId} ");
+                    System.Console.WriteLine();
+                }
             }
         }
     }

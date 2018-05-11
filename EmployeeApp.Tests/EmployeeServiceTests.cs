@@ -56,5 +56,42 @@ namespace EmployeeApp.Tests
             Assert.Equal(2, employees[0].EmpId);
             Assert.Equal(1, employees[1].EmpId);
         }
+
+        [Fact]
+        public void EmployeeService_Should_Not_Return_Result_With_Same_Id()
+        {
+            // Arrange
+            IEnumerable<Employee> models = new List<Employee>()
+            {
+                new Employee
+                {
+                    EmpId = 1,
+                    ProjectId = 1,
+                    DateFrom = new DateTime(2016,01,01),
+                    DateTo = new DateTime(2016,06,01)
+                },
+                new Employee
+                {
+                    EmpId = 1,
+                    ProjectId = 1,
+                    DateFrom = new DateTime(2015,12,01),
+                    DateTo = new DateTime(2016,06,01)
+                }
+            };
+
+            var employeeRepository = new Mock<IEmployeeRepository>();
+            employeeRepository.Setup(x => x.GetAll()).Returns(models);
+            IEmployeeService employeeService = new EmployeeService(employeeRepository.Object);
+
+            // Act
+            var projects = employeeService.GetEmployeesWithLongestOverlappingPeriod().ToList();
+
+            // Assert
+            Assert.NotNull(projects);
+            Assert.Single(projects);
+
+            var employees = projects[0].Employees.ToList();
+            Assert.Equal(1, employees[0].EmpId);
+        }
     }
 }

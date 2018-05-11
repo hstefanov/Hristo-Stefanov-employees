@@ -30,13 +30,15 @@ namespace EmployeeApp.Bussiness.Services
 
             IEnumerable<ProjectDto> result = employees
                             .GroupBy(e => e.ProjectId)
-                            .Select(g => 
+                            .Select(g =>
                                 new ProjectDto
                                 {
                                     ProjectId = g.Key,
                                     Employees = g.Select(e => e)
                                                  .OrderByDescending(e => e, new EmployeeComparer())
                                                  .Take(2)
+                                                 .GroupBy(e => e.EmpId)
+                                                 .Select(gr => gr.First())
                                 });
 
             return result;
